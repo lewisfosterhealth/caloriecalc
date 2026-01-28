@@ -1,0 +1,71 @@
+<script>
+/* ===============================
+   CALORIE + BMI CALCULATOR
+   =============================== */
+
+function calculateCalories() {
+    const sex = document.getElementById('sex').value;
+    const age = Number(document.getElementById('age').value);
+    const height = Number(document.getElementById('height').value);
+    const weight = Number(document.getElementById('weight').value);
+    const activity = Number(document.getElementById('activity').value);
+    const goal = document.getElementById('goal').value;
+    const rate = Number(document.getElementById('rate').value);
+
+    if (!age || !height || !weight || age <= 0 || height <= 0 || weight <= 0) {
+        alert("Please enter valid positive numbers.");
+        return;
+    }
+
+    // BMR (Mifflin-St Jeor)
+    let bmr;
+    if (sex === "male") {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    } else {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    }
+
+    const maintenance = Math.round(bmr * activity);
+    let target = maintenance;
+
+    if (goal === "lose") target -= rate;
+    if (goal === "gain") target += rate;
+
+    // BMI
+    const bmiValue = (weight / Math.pow(height / 100, 2)).toFixed(1);
+
+    let bmiStatus = "";
+    let bmiClass = "";
+
+    if (bmiValue < 18.5) {
+        bmiStatus = "Underweight";
+        bmiClass = "underweight";
+    } else if (bmiValue < 25) {
+        bmiStatus = "Normal";
+        bmiClass = "normal";
+    } else if (bmiValue < 30) {
+        bmiStatus = "Overweight";
+        bmiClass = "overweight";
+    } else {
+        bmiStatus = "Obese";
+        bmiClass = "obese";
+    }
+
+    // Output
+    document.getElementById("maint").textContent = maintenance;
+    document.getElementById("target").textContent = target;
+    document.getElementById("bmi").textContent = bmiValue;
+
+    const bmiStatusEl = document.getElementById("bmi-status");
+    bmiStatusEl.textContent = bmiStatus;
+    bmiStatusEl.className = bmiClass;
+
+    // BMI BAR (0–50 scale)
+    const marker = document.getElementById("bmi-marker");
+    const percent = Math.min(Math.max((bmiValue / 50) * 100, 0), 100);
+    marker.style.left = `calc(${percent}% - 2px)`;
+
+    // Show results
+    document.getElementById("results").classList.add("show");
+}
+</script>
