@@ -63,7 +63,7 @@ function calculateCalories() {
     // BMI BAR (0–50 scale)
     const marker = document.getElementById("bmi-marker");
     const percent = Math.min(Math.max((bmiValue / 50) * 100, 0), 100);
-    marker.style.left = `calc(${percent}% - 2px)`;
+    marker.style.left = `calc(${percent}% - 2px)`; 
 
     // Show results
     document.getElementById("results").classList.add("show");
